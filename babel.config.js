@@ -10,6 +10,7 @@ module.exports = {
         alias: {
           '@': ['./src'],
           '~images': './src/assets/images',
+          '~svgs': './src/assets/svgs',
           '~components': './src/components',
           '~utils': './src/utils'
         }
