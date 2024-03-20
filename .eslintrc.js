@@ -20,5 +20,8 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: ['react', 'prettier'],
-  rules: {}
+  rules: {
+    '@typescript-eslint/no-unused-vars': 1,
+    'react-hooks/exhaustive-deps': 1
+  }
 }
