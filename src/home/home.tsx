@@ -19,6 +19,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import { getWordCells } from '~utils'
 import Toast from 'react-native-toast-message'
 import { getWordListApi, getWordOverviewApi } from '@/apis/word.ts'
+import DeviceInfo from 'react-native-device-info'
 
 const WordCount = ({ label, value, Icon }: { label: string; value: string; Icon: React.FC<SvgProps> }) => (
   <View style={styles.allWordCount}>
@@ -192,6 +193,8 @@ export default function HomeScreen() {
     console.log('onLoadMore~', loading)
     !loading && setPage(page + 1)
   }
+
+  const appVersion = DeviceInfo.getVersion()
 
   return (
     <SafeAreaView>

@@ -28,7 +28,7 @@ service.interceptors.request.use(
   }
 )
 
-export const download = async (url: string, fileName: string) => {
+export const download = async (downloadLink: string, fileName: string, path?: string) => {
   // try {
   //   const rsp = await axios.get(url, { responseType: 'blob' })
   //   console.log('rsp', rsp)
@@ -38,11 +38,11 @@ export const download = async (url: string, fileName: string) => {
   // } catch (e) {
   //   console.error(e)
   // }
-  const path = `${RNFetchBlob.fs.dirs.MainBundleDir}/sounds/${fileName}`
+  path = path || `${RNFetchBlob.fs.dirs.MainBundleDir}/sounds/${fileName}`
   const res = await RNFetchBlob.config({
     path,
     fileCache: true
-  }).fetch('GET', url)
+  }).fetch('GET', downloadLink)
   Toast.show({
     type: 'success',
     text1: '下载成功',

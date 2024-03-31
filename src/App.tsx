@@ -10,9 +10,11 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import HomeScreen from '@/home/home.tsx'
 import Toast from 'react-native-toast-message'
+import checkVersion from '@/utils/checkVersion.ts'
 
 const Stack = createNativeStackNavigator()
 function App(): React.JSX.Element {
+  checkVersion()
   return (
     <>
       <NavigationContainer>
