@@ -19,17 +19,6 @@ import RNFetchBlob from 'rn-fetch-blob'
 import { getWordCells } from '~utils'
 import Toast from 'react-native-toast-message'
 import { getWordListApi, getWordOverviewApi } from '@/apis/word.ts'
-import DeviceInfo from 'react-native-device-info'
-
-const WordCount = ({ label, value, Icon }: { label: string; value: string; Icon: React.FC<SvgProps> }) => (
-  <View style={styles.allWordCount}>
-    <View style={styles.allWordCountLabel}>
-      {<Icon />}
-      <Text style={styles.allWordCountLabelText}>{label}</Text>
-    </View>
-    <Text style={styles.allWordCountValue}>{value}</Text>
-  </View>
-)
 
 export default function HomeScreen() {
   const [cells, setCells] = useState<WordCellProp[]>([])
@@ -49,7 +38,7 @@ export default function HomeScreen() {
     console.log('onRefresh')
     setPage(1)
     setOriginData([])
-    getWordOverview()
+    await Promise.all([getWordOverview(), getMoreData()])
     Toast.show({
       type: 'success',
       topOffset: 10,
@@ -120,6 +109,49 @@ export default function HomeScreen() {
     }
   }
 
+  const getWordOverview = async () => {
+    const { data } = await getWordOverviewApi()
+    setOverview(data)
+  }
+
+  useEffect(() => {
+    getWordOverview()
+  }, [])
+
+  const getMoreData = async () => {
+    try {
+      console.log('page~', page)
+      const rsp = await getWordListApi({ page })
+      const words = rsp.data.records
+      console.log('load-more', words)
+      const tempOriginData = [...originData, ...words]
+      setOriginData(tempOriginData)
+      setCells(getWordCells(tempOriginData))
+    } catch (e) {
+      console.log('e', e)
+      // setError(`Error: ${e}`)
+    }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    getMoreData()
+  }, [page])
+
+  const onLoadMore = async () => {
+    console.log('onLoadMore~', loading)
+    !loading && setPage(page + 1)
+  }
+
+  const WordCount = ({ label, value, Icon }: { label: string; value: string; Icon: React.FC<SvgProps> }) => (
+    <View style={styles.allWordCount}>
+      <View style={styles.allWordCountLabel}>
+        {<Icon />}
+        <Text style={styles.allWordCountLabelText}>{label}</Text>
+      </View>
+      <Text style={styles.allWordCountValue}>{value}</Text>
+    </View>
+  )
   const Header = () => {
     return (
       <LinearGradient colors={['#b985fc', '#91AFE1']} style={{ width: '100%', height: 164 }}>
@@ -160,41 +192,6 @@ export default function HomeScreen() {
       <Text style={styles.allWordCountValue}>{overview.today ?? '--'}</Text>
     </View>
   )
-
-  const getWordOverview = async () => {
-    const { data } = await getWordOverviewApi()
-    setOverview(data)
-  }
-
-  useEffect(() => {
-    getWordOverview()
-  }, [])
-
-  useEffect(() => {
-    const getMoreData = async () => {
-      try {
-        console.log('page~', page)
-        const rsp = await getWordListApi({ page })
-        const words = rsp.data.records
-        console.log('load-more', words)
-        const tempOriginData = [...originData, ...words]
-        setOriginData(tempOriginData)
-        setCells(getWordCells(tempOriginData))
-      } catch (e) {
-        console.log('e', e)
-        // setError(`Error: ${e}`)
-      }
-      setLoading(false)
-    }
-    getMoreData()
-  }, [page])
-
-  const onLoadMore = async () => {
-    console.log('onLoadMore~', loading)
-    !loading && setPage(page + 1)
-  }
-
-  const appVersion = DeviceInfo.getVersion()
 
   return (
     <SafeAreaView>
