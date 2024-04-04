@@ -102,11 +102,15 @@ export default function HomeScreen() {
 
   // 循环播放
   const playLoop = async (text: string) => {
-    const s = await playSound(text)
-    console.log('s', s)
-    if (s) {
-      s.setNumberOfLoops(-1)
-      s.play()
+    if (currentPlayVoice === text && sound?.isPlaying()) {
+      stopPlay()
+    } else {
+      const s = await playSound(text)
+      if (s) {
+        s.setNumberOfLoops(-1)
+        setCurrentPlayVoice(text)
+        s.play()
+      }
     }
   }
 
