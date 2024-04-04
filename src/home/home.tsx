@@ -4,7 +4,7 @@
  * @Description
  */
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import WordCard from '@/components/WordCard.tsx'
 import { download } from '@/utils/request.ts'
 import { OverViewProp, WordCellProp, WordProp } from '@/types/word'
@@ -34,6 +34,7 @@ export default function HomeScreen() {
   })
   const [sound, setSound] = useState<Sound | null>(null)
 
+  // 刷新
   const onRefresh = React.useCallback(async () => {
     console.log('onRefresh')
     setPage(1)
@@ -47,39 +48,41 @@ export default function HomeScreen() {
   }, [])
 
   const playSound = (text: string) => {
-    const path = `${RNFetchBlob.fs.dirs.MainBundleDir}/sounds/${text}.mp3`
-    console.log('path:', path)
-    setCurrentPlayVoice(text)
-    if (sound) {
-      sound.stop()
-      sound.release()
-    }
-    let soundInstance: Sound = new Sound(path, Sound.MAIN_BUNDLE, async error => {
-      console.log('error:', error)
-      if (error?.message === 'resource not found') {
-        await download(`https://fanyi.baidu.com/gettts?lan=en&text=${text}&spd=3&source=web`, `${text}.mp3`)
-        soundInstance = new Sound(path, Sound.MAIN_BUNDLE, async e => {
-          console.log('e', e)
-          if (e) {
-            console.log('播放失败')
-            return
-          }
-          soundInstance.play(sc => {
-            setCurrentPlayVoice('')
-            if (sc) {
-              console.log('successfully finished playing')
+    return new Promise<Sound>((resolve, reject) => {
+      const path = `${RNFetchBlob.fs.dirs.MainBundleDir}/sounds/${text}.mp3`
+      console.log('path', path)
+      const soundBundle = Platform.OS === 'ios' ? '' : Sound.DOCUMENT
+      if (sound) {
+        sound.stop()
+        sound.release()
+      }
+      let soundInstance: Sound = new Sound(path, soundBundle, async error => {
+        console.log('error:', error)
+        if (error?.message === 'resource not found' || error?.code === 'ENSOSSTATUSERRORDOMAIN2003334207') {
+          await download(`https://fanyi.baidu.com/gettts?lan=en&text=${text}&spd=3&source=web`, `${text}.mp3`)
+          soundInstance = new Sound(path, soundBundle, async e => {
+            if (e) {
+              console.log('播放失败', e)
             } else {
-              console.log('playback failed due to audio decoding errors')
+              setSound(soundInstance)
+              play(soundInstance)
             }
           })
-        })
-      } else if (!error) {
-        soundInstance.play(success => {
-          setCurrentPlayVoice('')
+        } else if (!error) {
+          setSound(soundInstance)
+          play(soundInstance)
+        }
+      })
+
+      const play = (s: Sound) => {
+        setCurrentPlayVoice(text)
+        s.play(success => {
           if (success) {
-            setSound(soundInstance)
+            setCurrentPlayVoice('')
+            resolve(soundInstance)
             console.log('successfully finished playing')
           } else {
+            reject()
             console.log('playback failed due to audio decoding errors')
           }
         })
@@ -87,6 +90,7 @@ export default function HomeScreen() {
     })
   }
 
+  // 停止播放
   const stopPlay = () => {
     if (sound) {
       sound.stop(() => {
@@ -96,19 +100,17 @@ export default function HomeScreen() {
     }
   }
 
-  const playLoop = (text?: string) => {
-    console.log('playLoop', sound)
-    // setCurrentPlayVoice(text)
-    if (sound) {
-      sound.setNumberOfLoops(-1)
-      sound.play()
-      console.log(`loops: ${sound.getNumberOfLoops()}`)
-    } else {
-      text && playSound(text)
-      playLoop()
+  // 循环播放
+  const playLoop = async (text: string) => {
+    const s = await playSound(text)
+    console.log('s', s)
+    if (s) {
+      s.setNumberOfLoops(-1)
+      s.play()
     }
   }
 
+  // 单词统计
   const getWordOverview = async () => {
     const { data } = await getWordOverviewApi()
     setOverview(data)
@@ -171,7 +173,7 @@ export default function HomeScreen() {
         <Text style={styles.timeText}>{item.date}</Text>
         {item.words.map(i => (
           <WordCard
-            playLoop={playLoop}
+            playLoop={() => playLoop(i.origin_text)}
             key={i.id}
             stopPlay={stopPlay}
             isPlaying={currentPlayVoice === i.origin_text}
