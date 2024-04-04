@@ -177,7 +177,7 @@ export default function HomeScreen() {
         <Text style={styles.timeText}>{item.date}</Text>
         {item.words.map(i => (
           <WordCard
-            playLoop={() => playLoop(i.origin_text)}
+            playLoop={playLoop}
             key={i.id}
             stopPlay={stopPlay}
             isPlaying={currentPlayVoice === i.origin_text}

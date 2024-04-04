@@ -17,7 +17,7 @@ type WordCardProps = {
 }
 export default function WordCard({ word, playSound, isPlaying, playLoop, stopPlay }: WordCardProps) {
   return (
-    <TouchableOpacity onPress={() => playSound(word.origin_text)}>
+    <TouchableOpacity onLongPress={() => playLoop(word.origin_text)} onPress={() => playSound(word.origin_text)}>
       <View style={styles.card}>
         <Text style={styles.word}>{word.origin_text}</Text>
         <View style={styles.phonetic}>
