@@ -4,7 +4,7 @@
  * @Description 检查应用版本
  */
 import DeviceInfo from 'react-native-device-info'
-import { getVersionApi } from '@/apis/version.ts'
+import { getVersionApi } from '@/services/version.ts'
 import Toast from 'react-native-toast-message'
 import { download } from '@/utils/request.ts'
 import RNFetchBlob from 'rn-fetch-blob'

@@ -18,7 +18,7 @@ import Sound from 'react-native-sound'
 import RNFetchBlob from 'rn-fetch-blob'
 import { getWordCells } from '~utils'
 import Toast from 'react-native-toast-message'
-import { getWordListApi, getWordOverviewApi } from '@/apis/word.ts'
+import { getWordListApi, getWordOverviewApi } from '@/services/word.ts'
 
 export default function HomeScreen() {
   const [cells, setCells] = useState<WordCellProp[]>([])
