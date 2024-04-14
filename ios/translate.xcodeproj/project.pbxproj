@@ -14,6 +14,8 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B0FB3324A95F0B9D41F3C64E /* libPods-translate-translateTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F91D52D410513C76D3FB64B /* libPods-translate-translateTests.a */; };
 		DE180C696476413178329584 /* libPods-translate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB130A3D1A6E50C040BFF301 /* libPods-translate.a */; };
+		F9F579A8E31846F58FE03F24 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A64AA997A874055A79E1BFD /* iconfont.ttf */; };
+		0DACFFF251654FCCB39007FB /* iconfont.json in Resources */ = {isa = PBXBuildFile; fileRef = 937D6314AD9243DE87140646 /* iconfont.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		8C267E00628AFCFE591728E1 /* Pods-translate.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-translate.release.xcconfig"; path = "Target Support Files/Pods-translate/Pods-translate.release.xcconfig"; sourceTree = "<group>"; };
 		EB130A3D1A6E50C040BFF301 /* libPods-translate.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-translate.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		7A64AA997A874055A79E1BFD /* iconfont.ttf */ = {isa = PBXFileReference; name = "iconfont.ttf"; path = "../src/assets/fonts/iconfont.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		937D6314AD9243DE87140646 /* iconfont.json */ = {isa = PBXFileReference; name = "iconfont.json"; path = "../src/assets/fonts/iconfont.json"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		51B55C9FB18143C3A23EAEC8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7A64AA997A874055A79E1BFD /* iconfont.ttf */,
+				937D6314AD9243DE87140646 /* iconfont.json */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +136,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				51B55C9FB18143C3A23EAEC8 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -243,6 +258,8 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				F9F579A8E31846F58FE03F24 /* iconfont.ttf in Resources */,
+				0DACFFF251654FCCB39007FB /* iconfont.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

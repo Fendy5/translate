@@ -1,7 +1,7 @@
 /**
  * @Author fendy
  * @CreateTime 2024/1/8 21:43
- * @Description
+ * @Description 首页
  */
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
@@ -200,24 +200,26 @@ export default function HomeScreen() {
   )
 
   return (
-    <SafeAreaView>
-      <StatusBar barStyle="light-content" backgroundColor={'#b985fc'} />
-      <View style={styles.appContainer}>
-        <Header />
-        <FlatList
-          data={cells}
-          refreshing={loading}
-          onRefresh={onRefresh}
-          contentInsetAdjustmentBehavior="automatic"
-          keyExtractor={item => item.date}
-          renderItem={WordCell}
-          onEndReached={onLoadMore}
-          onEndReachedThreshold={0.1}
-          ListFooterComponent={<ActivityIndicator />}
-          style={[styles.wordPanel]}
-        />
-      </View>
-    </SafeAreaView>
+    <View style={styles.appContainer}>
+      {Platform.OS === 'android' ? (
+        <StatusBar barStyle="light-content" backgroundColor={'#b985fc'} />
+      ) : (
+        <View style={styles.statusBar} />
+      )}
+      <Header />
+      <FlatList
+        data={cells}
+        refreshing={loading}
+        onRefresh={onRefresh}
+        contentInsetAdjustmentBehavior="automatic"
+        keyExtractor={item => item.date}
+        renderItem={WordCell}
+        onEndReached={onLoadMore}
+        onEndReachedThreshold={0.1}
+        ListFooterComponent={<ActivityIndicator />}
+        style={[styles.wordPanel]}
+      />
+    </View>
   )
 }
 
@@ -228,7 +230,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  statusBar: {
+    backgroundColor: '#b985fc',
+    height: 44
+  },
   appContainer: {
+    backgroundColor: '#eaecf4',
     height: '100%',
     display: 'flex'
   },

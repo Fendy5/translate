@@ -1,7 +1,7 @@
 /**
  * @Author fendy
  * @CreateTime 2024/1/8 21:42
- * @Description
+ * @Description 单词卡片
  */
 
 import React from 'react'
