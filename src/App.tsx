@@ -14,7 +14,7 @@ import checkVersion from '@/utils/checkVersion.ts'
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
 import ReciteScreen from '@/screens/ReciteScreen.tsx'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '@/components/Icon.tsx'
 
 // const Stack = createNativeStackNavigator()
 const Tab = createMaterialBottomTabNavigator()
@@ -23,15 +23,24 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Tab.Navigator>
+        <Tab.Navigator
+          theme={{ colors: { secondaryContainer: 'transparent' } }}
+          activeColor={'#6a2bf5'}
+          barStyle={{ backgroundColor: '#ffffff' }}>
           <Tab.Screen
             name="Home"
-            options={{ tabBarIcon: ({ color }) => <Icon name="home" size={30} color={color} /> }}
+            options={{
+              title: '首页',
+              tabBarIcon: ({ color }) => <Icon code={'\ue657'} color={color} size={24} />
+            }}
             component={HomeScreen}
           />
           <Tab.Screen
-            name="Recite"
-            options={{ tabBarIcon: ({ color }) => <Icon name="book" size={30} color={color} /> }}
+            name="Review"
+            options={{
+              title: '复习',
+              tabBarIcon: ({ color }) => <Icon code={'\ue683'} color={color} size={24} />
+            }}
             component={ReciteScreen}
           />
         </Tab.Navigator>
