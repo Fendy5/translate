@@ -90,7 +90,7 @@ android {
         applicationId "com.translate"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
+        versionCode 21
         versionName appVersion
     }
     signingConfigs {
