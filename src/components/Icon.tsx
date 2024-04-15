@@ -6,6 +6,11 @@
 import { Text } from 'react-native'
 import React from 'react'
 
-export default function Icon({ size, color, code }) {
+type IconProps = {
+  size: number
+  color: string
+  code: string
+}
+export default function Icon({ size, color, code }: IconProps) {
   return <Text style={{ fontFamily: 'iconfont', fontSize: size, color }}>{code}</Text>
 }
