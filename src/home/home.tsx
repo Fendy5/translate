@@ -4,7 +4,7 @@
  * @Description 首页
  */
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, Platform, StatusBar, StyleSheet, Text, View } from 'react-native'
 import WordCard from '@/components/WordCard.tsx'
 import { download } from '@/utils/request.ts'
 import { OverViewProp, WordCellProp, WordProp } from '@/types/word'
@@ -23,7 +23,6 @@ import { getWordListApi, getWordOverviewApi } from '@/services/word.ts'
 export default function HomeScreen() {
   const [cells, setCells] = useState<WordCellProp[]>([])
   const [originData, setOriginData] = useState<WordProp[]>([])
-  const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [currentPlayVoice, setCurrentPlayVoice] = useState('')
   const [overview, setOverview] = useState<OverViewProp>({
@@ -35,11 +34,14 @@ export default function HomeScreen() {
   const [sound, setSound] = useState<Sound | null>(null)
 
   // 刷新
+  const [freshLoading, setFreshLoading] = useState(false)
   const onRefresh = React.useCallback(async () => {
     console.log('onRefresh')
+    setFreshLoading(true)
     setPage(1)
     setOriginData([])
     await Promise.all([getWordOverview(), getMoreData()])
+    setFreshLoading(false)
     Toast.show({
       type: 'success',
       topOffset: 10,
@@ -137,7 +139,6 @@ export default function HomeScreen() {
       console.log('e', e)
       // setError(`Error: ${e}`)
     }
-    setLoading(false)
   }
 
   useEffect(() => {
@@ -145,8 +146,7 @@ export default function HomeScreen() {
   }, [page])
 
   const onLoadMore = async () => {
-    console.log('onLoadMore~', loading)
-    !loading && setPage(page + 1)
+    setPage(page + 1)
   }
 
   const WordCount = ({ label, value, Icon }: { label: string; value: string; Icon: React.FC<SvgProps> }) => (
@@ -209,13 +209,12 @@ export default function HomeScreen() {
       <Header />
       <FlatList
         data={cells}
-        refreshing={loading}
+        refreshing={freshLoading}
         onRefresh={onRefresh}
         contentInsetAdjustmentBehavior="automatic"
         keyExtractor={item => item.date}
         renderItem={WordCell}
         onEndReached={onLoadMore}
-        onEndReachedThreshold={0.1}
         ListFooterComponent={<ActivityIndicator />}
         style={[styles.wordPanel]}
       />
