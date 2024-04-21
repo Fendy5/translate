@@ -49,6 +49,7 @@ export default function HomeScreen() {
     })
   }, [])
 
+  // 音频播放相关
   const playSound = (text: string) => {
     return new Promise<Sound>((resolve, reject) => {
       const path = `${RNFetchBlob.fs.dirs.MainBundleDir}/sounds/${text}.mp3`
@@ -91,7 +92,6 @@ export default function HomeScreen() {
       }
     })
   }
-
   // 停止播放
   const stopPlay = () => {
     if (sound) {
@@ -101,7 +101,6 @@ export default function HomeScreen() {
       })
     }
   }
-
   // 循环播放
   const playLoop = async (text: string) => {
     if (currentPlayVoice === text && sound?.isPlaying()) {
@@ -135,6 +134,7 @@ export default function HomeScreen() {
       const tempOriginData = [...originData, ...words]
       setOriginData(tempOriginData)
       setCells(getWordCells(tempOriginData))
+      setFreshLoading(false)
     } catch (e) {
       console.log('e', e)
       // setError(`Error: ${e}`)
@@ -142,11 +142,15 @@ export default function HomeScreen() {
   }
 
   useEffect(() => {
+    console.log('useEffect-getMoreData')
     getMoreData()
   }, [page])
 
+  const [firstLoad, setFirstLoad] = useState<boolean>(true)
   const onLoadMore = async () => {
-    setPage(page + 1)
+    console.log('onLoadMore')
+    setFirstLoad(false)
+    !firstLoad && setPage(page + 1)
   }
 
   const WordCount = ({ label, value, Icon }: { label: string; value: string; Icon: React.FC<SvgProps> }) => (
