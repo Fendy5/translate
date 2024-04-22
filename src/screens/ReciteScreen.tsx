@@ -4,16 +4,18 @@
  * @Description
  */
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Icon from '@/components/Icon.tsx'
 import LinearGradient from 'react-native-linear-gradient'
-import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { NavigationProp } from '@react-navigation/native'
+import DatePicker from 'react-native-date-picker'
+import { formatDate } from '~utils'
 
 export default function ReciteScreen({ navigation }: { navigation: NavigationProp<any> }) {
   const cardList = [
     {
       title: '当周单词',
-      type: 'weekend',
+      type: 'week',
       desc: '复习当周的单词',
       code: '\ue70d',
       color: '#FA6400',
@@ -45,10 +47,34 @@ export default function ReciteScreen({ navigation }: { navigation: NavigationPro
     }
   ]
 
-  const goToReviewList = (type: string) => {
-    navigation.navigate('ReviewList', {
-      type
-    })
+  const goToReviewList = (type: string, title: string) => {
+    if (type === 'custom') {
+      setOpen(true)
+    } else {
+      navigation.navigate('ReviewList', { type, title })
+    }
+  }
+
+  const [date, setDate] = useState(new Date())
+  const [open, setOpen] = useState(false)
+  const [customDate, setCustomDate] = useState<Date[]>([])
+  const [title, setTitle] = useState('起始时间')
+  const onDateCancel = () => {
+    setOpen(false)
+  }
+  const onDateConfirm = (d: Date) => {
+    if (customDate.length) {
+      const dateStr = `${formatDate(customDate[0])}~${formatDate(d)}`
+      setOpen(false)
+      navigation.navigate('ReviewList', { type: dateStr, title: dateStr })
+    } else {
+      setCustomDate([d])
+      setOpen(false)
+      // 初始化结束时间弹窗
+      setDate(new Date())
+      setTitle('结束时间')
+      setOpen(true)
+    }
   }
 
   return (
@@ -58,19 +84,20 @@ export default function ReciteScreen({ navigation }: { navigation: NavigationPro
       colors={['#b985fc', '#E3E3E3', '#91AFE1']}
       style={{ width: '100%', height: '100%' }}>
       <View style={styles.container}>
+        <DatePicker
+          modal
+          open={open}
+          mode={'date'}
+          title={title}
+          date={date}
+          maximumDate={new Date()}
+          onConfirm={onDateConfirm}
+          onCancel={onDateCancel}
+        />
         <View style={styles.cardList}>
           {cardList.map(i => (
-            <TouchableOpacity
-              style={styles.cardOuter}
-              onPress={() => {
-                goToReviewList(i.type)
-              }}>
-              <LinearGradient
-                style={styles.card}
-                key={i.code}
-                colors={i.bg}
-                start={{ x: 0.85, y: 0 }}
-                end={{ x: 0, y: 1 }}>
+            <TouchableOpacity style={styles.cardOuter} key={i.type} onPress={() => goToReviewList(i.type, i.title)}>
+              <LinearGradient style={styles.card} colors={i.bg} start={{ x: 0.85, y: 0 }} end={{ x: 0, y: 1 }}>
                 <View>
                   <Text style={styles.title}>
                     <Text style={{ color: i.color }}>{i.title}</Text>

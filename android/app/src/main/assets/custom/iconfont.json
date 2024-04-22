@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "6868952",
+      "name": "nodata",
+      "font_class": "nodata",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
       "icon_id": "26998814",
       "name": "原子",
       "font_class": "yuanzi",

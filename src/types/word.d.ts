@@ -29,3 +29,8 @@ export type OverViewProp = {
   month: string | '--'
   week: string | '--'
 }
+
+export type ReviewCustomProp = {
+  start_date: string
+  end_date: string
+}

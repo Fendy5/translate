@@ -27,3 +27,10 @@ export const getWordCells = (words: WordProp[]) => {
 export const getDateFromTime = (time: string) => {
   return time.split(' ')[0]
 }
+
+/**
+ * @desc 日期格式化
+ * @param date
+ * @return 2024-01-01
+ */
+export const formatDate = (date: Date) => date.toISOString().slice(0, 10)
