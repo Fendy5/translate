@@ -1,6 +1,6 @@
 {
   "name": "translate",
-  "version": "0.7.4",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "start": "react-native start --experimental-debugger",
