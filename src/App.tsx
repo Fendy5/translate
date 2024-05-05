@@ -8,7 +8,6 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import HomeScreen from '@/home/home.tsx'
 import Toast from 'react-native-toast-message'
 import checkVersion from '@/utils/checkVersion.ts'
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
@@ -16,6 +15,7 @@ import ReciteScreen from '@/screens/ReciteScreen.tsx'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import Icon from '@/components/Icon.tsx'
 import ReviewListScreen from '@/screens/ReviewListScreen.tsx'
+import HomeScreen from '@/screens/HomeScreen.tsx'
 
 const Stack = createNativeStackNavigator()
 const Tab = createMaterialBottomTabNavigator()

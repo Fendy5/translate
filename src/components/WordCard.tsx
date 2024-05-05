@@ -5,45 +5,62 @@
  */
 
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { WordProp } from '@/types/word'
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { DictionaryProp, WordCardProps } from '@/types/word'
 
-type WordCardProps = {
-  word: WordProp
-  isPlaying: boolean
-  playSound: (text: string) => void
-  playLoop: (text: string) => void
-  stopPlay?: () => void
-}
-export default function WordCard({ word, playSound, isPlaying, playLoop, stopPlay }: WordCardProps) {
+export default function WordCard({
+  word,
+  playSound,
+  isPlaying,
+  primaryBtn,
+  index,
+  secondaryBtn,
+  playLoop,
+  stopPlay,
+  showFooter = true
+}: WordCardProps) {
   return (
-    <TouchableOpacity onLongPress={() => playLoop(word.origin_text)} onPress={() => playSound(word.origin_text)}>
-      <View style={styles.card}>
-        <Text style={styles.word}>{word.origin_text}</Text>
-        <View style={styles.phonetic}>
-          <Text style={styles.phoneticText}>{word.phonetic_symbol} </Text>
-          {/*<VoicePng />*/}
-          {isPlaying ? (
-            <TouchableOpacity onPress={stopPlay}>
-              <Image source={require('~images/voice.gif')} style={styles.voiceIcon} />
-            </TouchableOpacity>
+    <View style={styles.card}>
+      <View style={styles.cardContent}>
+        <TouchableOpacity onLongPress={() => playLoop(word.origin_text)} onPress={() => playSound(word.origin_text)}>
+          <Text style={styles.word}>{word.origin_text}</Text>
+          <View style={styles.phonetic}>
+            <Text style={styles.phoneticText}>{word.phonetic_symbol} </Text>
+            {/*<VoicePng />*/}
+            {isPlaying ? (
+              <TouchableOpacity onPress={stopPlay}>
+                <Image source={require('~images/voice.gif')} style={styles.voiceIcon} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={() => playLoop(word.origin_text)}>
+                <Image source={require('~images/voice_static.png')} style={styles.voiceIcon} />
+              </TouchableOpacity>
+            )}
+          </View>
+          {word.dictionaries.length ? (
+            word.dictionaries.map((i: DictionaryProp) => (
+              <Text key={i.id} style={styles.annotation}>
+                {i.annotation}
+              </Text>
+            ))
           ) : (
-            <TouchableOpacity onPress={() => playLoop(word.origin_text)}>
-              <Image source={require('~images/voice_static.png')} style={styles.voiceIcon} />
-            </TouchableOpacity>
+            <Text style={styles.annotation}>{word.translation_text}</Text>
           )}
-        </View>
-        {word.dictionaries.length ? (
-          word.dictionaries.map(i => (
-            <Text key={i.id} style={styles.annotation}>
-              {i.annotation}
-            </Text>
-          ))
-        ) : (
-          <Text style={styles.annotation}>{word.translation_text}</Text>
-        )}
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+      {showFooter ? (
+        <View style={styles.cardFooter}>
+          <View style={styles.btn}>
+            <Button onPress={() => secondaryBtn(word.origin_text, index)} title="生疏" color="#6D7278" />
+          </View>
+          <View style={[styles.btn, styles.leftLine]}>
+            <Button onPress={() => primaryBtn(word.origin_text, index)} title="熟悉" color="#6236FF" />
+          </View>
+        </View>
+      ) : (
+        ''
+      )}
+    </View>
   )
 }
 
@@ -52,10 +69,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     shadowColor: '#EAECF4',
     borderRadius: 8,
+    marginBottom: 12
+  },
+  cardContent: {
     paddingHorizontal: 24,
     paddingTop: 14,
-    paddingBottom: 32,
-    marginBottom: 12
+    paddingBottom: 8
+  },
+  cardFooter: {
+    display: 'flex',
+    paddingTop: 4,
+    paddingBottom: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopColor: '#E5E5E5',
+    borderTopWidth: 1
+  },
+  leftLine: {
+    borderLeftColor: '#E5E5E5',
+    borderLeftWidth: 1
+  },
+  btn: {
+    fontSize: 20,
+    width: '50%'
   },
   voiceIcon: {
     width: 18,
@@ -86,7 +122,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontFamily: 'PingFang SC',
     fontWeight: '500',
-    paddingBottom: 6,
+    paddingBottom: 8,
     fontSize: 16
   }
 })

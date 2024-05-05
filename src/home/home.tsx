@@ -153,6 +153,8 @@ export default function HomeScreen() {
     !firstLoad && setPage(page + 1)
   }
 
+  console.log('99999')
+
   const WordCount = ({ label, value, Icon }: { label: string; value: string; Icon: React.FC<SvgProps> }) => (
     <View style={styles.allWordCount}>
       <View style={styles.allWordCountLabel}>
