@@ -5,7 +5,7 @@
  */
 
 import React from 'react'
-import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { DictionaryProp, WordCardProps } from '@/types/word'
 
 export default function WordCard({
@@ -50,12 +50,12 @@ export default function WordCard({
       </View>
       {showFooter ? (
         <View style={styles.cardFooter}>
-          <View style={styles.btn}>
-            <Button onPress={() => secondaryBtn(word.origin_text, index)} title="生疏" color="#6D7278" />
-          </View>
-          <View style={[styles.btn, styles.leftLine]}>
-            <Button onPress={() => primaryBtn(word.origin_text, index)} title="熟悉" color="#6236FF" />
-          </View>
+          <TouchableOpacity onPress={() => secondaryBtn(word.origin_text, index)} style={styles.btn}>
+            <Text style={styles.btnText}>生疏</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => primaryBtn(word.origin_text, index)} style={[styles.btn, styles.leftLine]}>
+            <Text style={[styles.btnText, styles.primaryText]}>熟悉</Text>
+          </TouchableOpacity>
         </View>
       ) : (
         ''
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
   },
   cardFooter: {
     display: 'flex',
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: 10,
+    paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderTopColor: '#E5E5E5',
@@ -90,8 +90,17 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1
   },
   btn: {
-    fontSize: 20,
+    display: 'flex',
+    // justifyContent: 'center',
+    alignItems: 'center',
     width: '50%'
+  },
+  btnText: {
+    lineHeight: 18,
+    fontSize: 14
+  },
+  primaryText: {
+    color: '#6236FF'
   },
   voiceIcon: {
     width: 18,
