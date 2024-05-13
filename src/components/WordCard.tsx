@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     lineHeight: 18,
+    color: '#666',
     fontSize: 14
   },
   primaryText: {
