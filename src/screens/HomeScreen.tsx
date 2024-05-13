@@ -12,6 +12,7 @@ import Sound from 'react-native-sound'
 import RNFetchBlob from 'rn-fetch-blob'
 import { getTodayWordListApi, getWordListApi, getWordOverviewApi, updateProficiencyApi } from '@/services/word.ts'
 import { HomeHeader } from '@/components/HomeScreen/HomeHeader.tsx'
+import { debounce } from 'lodash'
 
 export default function HomeScreen() {
   const [page, setPage] = useState(1)
@@ -120,19 +121,16 @@ export default function HomeScreen() {
   }
   // 获取随机单词
   const getRandomWordList = async () => {
-    setLoading(true)
     const { data } = await getWordListApi({ page }, 'random')
     setWordList(pre => {
       const newData = [...pre]
       newData[1].data = [...newData[1].data, ...data.records]
       return newData
     })
-    setLoading(false)
   }
-  const [loading, setLoading] = useState(false)
-  const onLoadMore = () => {
+  const onLoadMore = debounce(() => {
     setPage(page + 1)
-  }
+  }, 1500)
   const onPrimaryBtn = async (origin_text: string, index: number) => {
     const { code } = await updateProficiencyApi({ origin_text })
     if (code === 1) {
@@ -152,6 +150,17 @@ export default function HomeScreen() {
         return newData
       })
     }
+  }
+
+  // 刷新
+  const [freshLoading, setFreshLoading] = useState(false)
+  const onRefresh = () => {
+    setFreshLoading(true)
+    setWordList(initWordList)
+    setPage(1)
+    getTodayWordList()
+    getRandomWordList()
+    setFreshLoading(false)
   }
 
   useEffect(() => {
@@ -176,7 +185,8 @@ export default function HomeScreen() {
         <SectionList
           sections={wordList}
           showsVerticalScrollIndicator={false}
-          refreshing={loading}
+          refreshing={freshLoading}
+          onRefresh={onRefresh}
           onEndReached={onLoadMore}
           ListEmptyComponent={() => <Text>暂无数据</Text>}
           ListFooterComponent={() => <ActivityIndicator style={styles.loading} size="small" color="#6236FF" />}
