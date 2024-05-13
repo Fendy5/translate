@@ -122,8 +122,6 @@ export default function HomeScreen() {
   const getRandomWordList = async () => {
     setLoading(true)
     const { data } = await getWordListApi({ page }, 'random')
-    console.log('data', data.records)
-    // setRandomWordList([...randomWordList, ...data.records])
     setWordList(pre => {
       const newData = [...pre]
       newData[1].data = [...newData[1].data, ...data.records]
@@ -181,10 +179,11 @@ export default function HomeScreen() {
           refreshing={loading}
           onEndReached={onLoadMore}
           ListEmptyComponent={() => <Text>暂无数据</Text>}
+          ListFooterComponent={() => <ActivityIndicator style={styles.loading} size="small" color="#6236FF" />}
           renderSectionHeader={({ section: { title } }) => <Text style={styles.timeText}>{title}</Text>}
           renderItem={({ index, item, section: { title, data } }) => {
             if (data.length === 0) {
-              return <Text>No data in this section</Text> // 在这里展示空数据提示
+              return <Text style={styles.timeText}>No data in this section</Text> // 在这里展示空数据提示
             }
             return (
               <View style={styles.wordCardItem}>
@@ -204,7 +203,6 @@ export default function HomeScreen() {
             )
           }}
         />
-        {loading ? <ActivityIndicator style={styles.loading} size="small" color="#0000ff" /> : ''}
       </View>
       {/*<ScrollView scrollEventThrottle={500} onScroll={onScroll} stickyHeaderIndices={[0, 2]} style={styles.wordPanel}>*/}
       {/*  <View>*/}
