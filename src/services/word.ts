@@ -16,4 +16,4 @@ export const getWordOverviewApi = () => request.get('/api/v1/get_word_overview')
 export const getReviewApi = (type: string, params: PageProp & Partial<ReviewCustomProp>) =>
   request.get(`/api/v1/review/${type}`, { params })
 
-export const updateProficiencyApi = (data: ProficiencyProp) => request.post(`/api/v1/update_proficiency`, { data })
+export const updateProficiencyApi = (data: ProficiencyProp) => request.post(`/api/v1/update_proficiency`, data)
