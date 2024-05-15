@@ -90,14 +90,14 @@ android {
         applicationId "com.translate"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 35
+        versionCode 37
         versionName appVersion
     }
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def file = output.outputFile
             def fileName = "translate-v" + appVersion + ".apk"
-            output.outputFileName = new File(file.parent, fileName)
+            output.outputFileName = fileName
         }
     }
     signingConfigs {
