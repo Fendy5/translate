@@ -93,6 +93,13 @@ android {
         versionCode 35
         versionName appVersion
     }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def file = output.outputFile
+            def fileName = "translate-v" + appVersion + ".apk"
+            output.outputFileName = new File(file.parent, fileName)
+        }
+    }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')

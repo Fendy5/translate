@@ -12,8 +12,6 @@ import RNFetchBlob from 'rn-fetch-blob'
 const checkVersion = async () => {
   const appVersion = DeviceInfo.getVersion()
   const { data } = await getVersionApi()
-  console.log('version', data)
-  console.log(data > appVersion)
   if (compareVersion(data, appVersion)) {
     Toast.show({
       text1: '发现新版本',
@@ -29,7 +27,7 @@ const checkVersion = async () => {
         console.log('正在下载APP')
         downloadApp().then(async () => {
           const appLink = 'https://translate.fendy5.cn/api/v1/download'
-          await download(appLink, 'app-release', path)
+          await download(appLink, '', path)
           await RNFetchBlob.android.actionViewIntent(path, 'application/vnd.android.package-archive')
         })
       }
@@ -38,10 +36,10 @@ const checkVersion = async () => {
 }
 
 // v1>v2
-const compareVersion = (v1: string, v2: string) => {
-  const v1Arr = v1.split('.')
-  const v2Arr = v2.split('.')
-  return v1Arr[0] > v2Arr[0] || v1Arr[1] > v2Arr[1] || v1Arr[2] > v2Arr[2]
+const compareVersion = (online: string, local: string) => {
+  const onLineArr = online.split('.').map(Number)
+  const localArr = local.split('.').map(Number)
+  return onLineArr[0] > localArr[0] || onLineArr[1] > localArr[1] || onLineArr[2] > localArr[2]
 }
 
 const downloadApp = async () => {}
