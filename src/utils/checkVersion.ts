@@ -19,17 +19,15 @@ const checkVersion = async () => {
     })
     const path = `${RNFetchBlob.fs.dirs.DownloadDir}/translate-v${data}.apk`
     console.log('path', path)
-    RNFetchBlob.fs.exists(path).then(exists => {
+    RNFetchBlob.fs.exists(path).then(async exists => {
       if (exists) {
         console.log('APP已下载')
-        RNFetchBlob.android.actionViewIntent(path, 'application/vnd.android.package-archive')
+        await RNFetchBlob.android.actionViewIntent(path, 'application/vnd.android.package-archive')
       } else {
         console.log('正在下载APP')
-        downloadApp().then(async () => {
-          const appLink = 'https://translate.fendy5.cn/api/v1/download'
-          await download(appLink, '', path)
-          await RNFetchBlob.android.actionViewIntent(path, 'application/vnd.android.package-archive')
-        })
+        const appLink = 'https://translate.fendy5.cn/api/v1/download'
+        await download(appLink, `translate-v${data}.apk`, path)
+        await RNFetchBlob.android.actionViewIntent(path, 'application/vnd.android.package-archive')
       }
     })
   }

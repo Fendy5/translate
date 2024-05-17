@@ -31,7 +31,7 @@ const Home = () => {
       <Tab.Screen
         name="HomeScreen"
         options={{
-          title: '首页1',
+          title: '首页',
           tabBarIcon: ({ color }) => <Icon code={'\ue657'} color={color} size={24} />
         }}
         component={HomeScreen}
