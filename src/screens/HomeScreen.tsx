@@ -161,7 +161,7 @@ export default function HomeScreen() {
     setWordList(initWordList)
     setPage(1)
     getTodayWordList()
-    getRandomWordList()
+    // getRandomWordList()
     setFreshLoading(false)
   }
 
