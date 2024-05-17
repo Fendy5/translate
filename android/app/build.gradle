@@ -90,7 +90,7 @@ android {
         applicationId "com.translate"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 39
+        versionCode 41
         versionName appVersion
     }
     applicationVariants.all { variant ->
