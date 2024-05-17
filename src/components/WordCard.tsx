@@ -4,12 +4,13 @@
  * @Description 单词卡片
  */
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { DictionaryProp, WordCardProps } from '@/types/word'
 
 export default function WordCard({
   word,
+  isMask = false,
   playSound,
   isPlaying,
   primaryBtn,
@@ -19,6 +20,7 @@ export default function WordCard({
   stopPlay,
   showFooter = true
 }: WordCardProps) {
+  const [mask, setMask] = useState<boolean>(isMask)
   return (
     <View style={styles.card}>
       <View style={styles.cardContent}>
@@ -38,11 +40,17 @@ export default function WordCard({
             )}
           </View>
           {word.dictionaries.length ? (
-            word.dictionaries.map((i: DictionaryProp) => (
-              <Text key={i.id} style={styles.annotation}>
-                {i.annotation}
-              </Text>
-            ))
+            mask ? (
+              <Text onPress={() => setMask(false)} style={styles.mask} />
+            ) : (
+              word.dictionaries.map((i: DictionaryProp) => (
+                <Text key={i.id} style={styles.annotation}>
+                  {i.annotation}
+                </Text>
+              ))
+            )
+          ) : mask ? (
+            <Text onPress={() => setMask(false)} style={styles.mask} />
           ) : (
             <Text style={styles.annotation}>{word.translation_text}</Text>
           )}
@@ -128,6 +136,10 @@ const styles = StyleSheet.create({
     marginRight: 20
   },
   phoneticIcon: {},
+  mask: {
+    backgroundColor: '#8f8c8c',
+    height: 30
+  },
   annotation: {
     color: '#000',
     fontFamily: 'PingFang SC',

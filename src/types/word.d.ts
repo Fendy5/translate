@@ -43,6 +43,7 @@ export type ReviewCustomProp = {
 
 export type WordCardProps = React.ComponentProps & {
   word: WordProp
+  isMask: Boolean
   isPlaying: boolean
   primaryBtn?: (text: string, index: number) => void
   secondaryBtn?: (text: string, index: number) => void

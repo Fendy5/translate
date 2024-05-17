@@ -202,6 +202,7 @@ export default function HomeScreen() {
                 <WordCard
                   playLoop={playLoop}
                   primaryBtn={onPrimaryBtn}
+                  isMask
                   secondaryBtn={onSecondaryBtn}
                   key={item.id}
                   index={index}
