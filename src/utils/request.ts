@@ -8,6 +8,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import Toast from 'react-native-toast-message'
 
 const service = axios.create({
+  // baseURL: 'https://translate.fendy5.cn',
   baseURL: __DEV__ ? 'http://10.0.2.2:8000' : 'https://translate.fendy5.cn',
   // withCredentials: true,
   timeout: 150000

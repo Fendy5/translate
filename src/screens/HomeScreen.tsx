@@ -12,7 +12,7 @@ import Sound from 'react-native-sound'
 import RNFetchBlob from 'rn-fetch-blob'
 import { getTodayWordListApi, getWordListApi, getWordOverviewApi, updateProficiencyApi } from '@/services/word.ts'
 import { HomeHeader } from '@/components/HomeScreen/HomeHeader.tsx'
-import { debounce } from 'lodash'
+import { throttle } from 'lodash'
 
 export default function HomeScreen() {
   const [page, setPage] = useState(1)
@@ -119,18 +119,20 @@ export default function HomeScreen() {
       })
     }
   }
+
   // 获取随机单词
   const getRandomWordList = async () => {
     const { data } = await getWordListApi({ page }, 'random')
+    console.log('data', data)
     setWordList(pre => {
       const newData = [...pre]
       newData[1].data = [...newData[1].data, ...data.records]
       return newData
     })
   }
-  const onLoadMore = debounce(() => {
+  const onLoadMore = throttle(() => {
     setPage(page + 1)
-  }, 1500)
+  }, 3000)
   const onPrimaryBtn = async (origin_text: string, index: number) => {
     const { code } = await updateProficiencyApi({ origin_text })
     if (code === 1) {
