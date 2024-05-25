@@ -202,10 +202,11 @@ export default function HomeScreen() {
                 <WordCard
                   playLoop={playLoop}
                   primaryBtn={onPrimaryBtn}
-                  isMask
+                  isMask={title === '复习单词'}
                   secondaryBtn={onSecondaryBtn}
                   key={item.id}
                   index={index}
+                  createTime={title === '复习单词'}
                   showFooter={title === '复习单词'}
                   stopPlay={stopPlay}
                   isPlaying={currentPlayVoice === item.origin_text}

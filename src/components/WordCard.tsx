@@ -18,13 +18,15 @@ export default function WordCard({
   secondaryBtn,
   playLoop,
   stopPlay,
-  showFooter = true
+  showFooter = true,
+  createTime = false
 }: WordCardProps) {
   const [mask, setMask] = useState<boolean>(isMask)
   return (
     <View style={styles.card}>
       <View style={styles.cardContent}>
         <TouchableOpacity onLongPress={() => playLoop(word.origin_text)} onPress={() => playSound(word.origin_text)}>
+          {createTime ? <Text style={styles.crateTime}>{word.create_time}</Text> : ''}
           <Text style={styles.word}>{word.origin_text}</Text>
           <View style={styles.phonetic}>
             <Text style={styles.phoneticText}>{word.phonetic_symbol} </Text>
@@ -66,7 +68,7 @@ export default function WordCard({
           </TouchableOpacity>
         </View>
       ) : (
-        ''
+        <View style={styles.footerBottom} />
       )}
     </View>
   )
@@ -80,9 +82,16 @@ const styles = StyleSheet.create({
     marginBottom: 12
   },
   cardContent: {
+    position: 'relative',
     paddingHorizontal: 24,
     paddingTop: 14,
     paddingBottom: 8
+  },
+  crateTime: {
+    color: '#999',
+    position: 'absolute',
+    top: 0,
+    right: 0
   },
   cardFooter: {
     display: 'flex',
@@ -139,6 +148,9 @@ const styles = StyleSheet.create({
   mask: {
     backgroundColor: '#8f8c8c',
     height: 30
+  },
+  footerBottom: {
+    marginBottom: 16
   },
   annotation: {
     color: '#000',
