@@ -120,6 +120,7 @@ const ReviewListScreen = ({ route }: { route: any }) => {
           <WordCard
             playLoop={playLoop}
             key={i.id}
+            showFooter={false}
             stopPlay={stopPlay}
             isPlaying={currentPlayVoice === i.origin_text}
             playSound={playSound}
